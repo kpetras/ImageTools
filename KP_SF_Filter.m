@@ -33,7 +33,7 @@ if strcmp(opt.type, 'butt')
     
     if length(opt.cutoff)<2
         if opt.whichfilter == 0
-            opt.cutoff(2) = m;
+            opt.cutoff(2) = opt.cutoff(1);
         elseif opt.whichfilter == 1
             opt.cutoff(2) = opt.cutoff(1);
         elseif opt.whichfilter ==3
@@ -58,6 +58,17 @@ if strcmp(opt.type, 'butt')
     BandFrequencies = real(ifft2(ifftshift(BPFilter .* FFT)));
     
 elseif strcmp(opt.type, 'gauss')
+      
+    if length(opt.cutoff)<2
+        if opt.whichfilter == 0
+            opt.cutoff(2) = opt.cutoff(1);
+        elseif opt.whichfilter == 1
+            opt.cutoff(2) = opt.cutoff(1);
+        elseif opt.whichfilter ==3
+            error('you need to provide two cutoff values to make a band-pass filter [low high]');
+        end
+    end
+    
     [nx,ny]= size(im);
     FFT = fft2(im,2*nx-1,2*ny-1);
     FFT(1,1) = 0; %removing DC component
